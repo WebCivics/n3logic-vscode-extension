@@ -1,0 +1,37 @@
+[
+  {
+    "task": "Add support for nested formulas in n3logic.tmLanguage.json",
+    "description": "Update the #set pattern to include recursive #set inclusion for nested formulas.",
+    "file": "syntaxes/n3logic.tmLanguage.json"
+  },
+  {
+    "task": "Add specific patterns for built-in predicates",
+    "description": "Add a #builtin-predicate pattern to highlight known built-in namespaces (e.g., math:, string:) distinctly.",
+    "file": "syntaxes/n3logic.tmLanguage.json"
+  },
+  {
+    "task": "Add functional built-in pattern",
+    "description": "Add a #functional-builtin pattern to highlight log:call(...) and similar constructs.",
+    "file": "syntaxes/n3logic.tmLanguage.json"
+  },
+  {
+    "task": "Add numeric literal with datatype pattern",
+    "description": "Add a pattern for typed numeric literals (e.g., 42^^xsd:integer).",
+    "file": "syntaxes/n3logic.tmLanguage.json"
+  },
+  {
+    "task": "Add Unicode support for identifiers",
+    "description": "Update #prefixedName, #variable, and #blankNode patterns to use \\p{L} and \\p{N} for Unicode support.",
+    "file": "syntaxes/n3logic.tmLanguage.json"
+  },
+  {
+    "task": "Preserve all original patterns",
+    "description": "Ensure all original patterns in n3logic.tmLanguage.json are preserved and merged with new enhancements.",
+    "file": "syntaxes/n3logic.tmLanguage.json"
+  },
+  {
+    "task": "Validate and merge JSON",
+    "description": "Merge original JSON with new patterns, ensuring no conflicts and valid JSON structure.",
+    "file": "syntaxes/n3logic.tmLanguage.json"
+  }
+]

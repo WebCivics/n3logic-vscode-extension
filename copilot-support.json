@@ -1,0 +1,64 @@
+{
+  "copilotSupport": [
+    {
+      "feature": "Completions/IntelliSense",
+      "description": "Context-aware suggestions for IRIs, prefixes, variables, builtins, and rule templates. Suggest builtins and their argument signatures as users type.",
+      "status": "recommended"
+    },
+    {
+      "feature": "Hover Tooltips",
+      "description": "Show documentation for builtins, prefixes, and rule constructs when hovering. Display type info, descriptions, and links to relevant N3Logic or W3C docs.",
+      "status": "recommended"
+    },
+    {
+      "feature": "Signature Help",
+      "description": "Show argument types and descriptions for builtins and functions as the user types.",
+      "status": "recommended"
+    },
+    {
+      "feature": "Go to Definition/Peek Definition",
+      "description": "Enable navigation to prefix declarations, rule definitions, and builtin documentation.",
+      "status": "recommended"
+    },
+    {
+      "feature": "Rename Symbol",
+      "description": "Allow renaming of variables, prefixes, and rule names across the document.",
+      "status": "recommended"
+    },
+    {
+      "feature": "Code Actions/Quick Fixes",
+      "description": "Offer quick fixes for undefined prefixes, unbound variables, or common syntax errors. Suggest adding missing prefix declarations or correcting builtin names.",
+      "status": "recommended"
+    },
+    {
+      "feature": "Formatting",
+      "description": "Add a document formatter for N3Logic, ensuring consistent indentation and spacing.",
+      "status": "recommended"
+    },
+    {
+      "feature": "Inlay Hints",
+      "description": "Show inlay hints for variable types, builtin argument types, or inferred values.",
+      "status": "recommended"
+    },
+    {
+      "feature": "Semantic Highlighting",
+      "description": "Expand semantic tokens to distinguish between different types of IRIs, variables, and builtins.",
+      "status": "recommended"
+    },
+    {
+      "feature": "Diagnostics for Best Practices",
+      "description": "Warn about anti-patterns, deprecated features, or inefficient rule constructs.",
+      "status": "recommended"
+    },
+    {
+      "feature": "Snippets",
+      "description": "Provide code snippets for common N3Logic patterns, rules, and builtin usage.",
+      "status": "recommended"
+    },
+    {
+      "feature": "Copilot Custom Instructions",
+      "description": "Add detailed, up-to-date instructions in .github/copilot-instructions.md to help Copilot generate high-quality N3Logic code and explanations.",
+      "status": "recommended"
+    }
+  ]
+}

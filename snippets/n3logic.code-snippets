@@ -1,0 +1,34 @@
+{
+  "N3Logic Rule": {
+    "prefix": "n3rule",
+    "body": [
+      "{",
+      "  ?subject ?predicate ?object .",
+      "} => {",
+      "  ?subject ?predicate ?object .",
+      "}."
+    ],
+    "description": "N3Logic rule template"
+  },
+  "Prefix Declaration": {
+    "prefix": "n3prefix",
+    "body": [
+      "@prefix ${1:ex}: <${2:http://example.org/}#> ."
+    ],
+    "description": "N3Logic prefix declaration"
+  },
+  "Builtin Usage": {
+    "prefix": "n3builtin",
+    "body": [
+      "${1:math:sum}(${2:x}, ${3:y})"
+    ],
+    "description": "N3Logic builtin usage"
+  },
+  "ForAll Declaration": {
+    "prefix": "n3forall",
+    "body": [
+      "@forAll ${1:?x}, ${2:?y} ."
+    ],
+    "description": "N3Logic forAll declaration"
+  }
+}

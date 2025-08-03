@@ -1,0 +1,31 @@
+# Test: Highlighting of N3Logic rules, built-ins, and nested formulas
+
+@prefix ex: <http://example.org/>.
+@prefix math: <http://www.w3.org/2000/10/swap/math#>.
+
+# Simple triple
+ex:Alice ex:knows ex:Bob.
+
+# Rule
+{ ?x ex:knows ?y } => { ?y ex:knows ?x }.
+
+# Built-in
+math:greaterThan(?x, 5).
+
+# Nested formula
+{ { ?x ex:knows ?y } => { ?y ex:friend ?x } }.
+
+# Typed numeric literal
+ex:Alice ex:age 42^^<http://www.w3.org/2001/XMLSchema#integer>.
+
+# Unicode identifiers
+ex:Αλφα ex:γνωρίζει ex:Βήτα.
+
+# Functional built-in
+log:call("test", "arg1", "arg2").
+
+# List
+(ex:Alice ex:Bob)
+
+# Blank node
+_:b1 ex:name "Alice"@en.

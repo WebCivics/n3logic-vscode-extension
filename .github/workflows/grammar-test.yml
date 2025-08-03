@@ -1,0 +1,37 @@
+
+# Automated Grammar Testing for N3Logic VS Code Extension
+# This workflow runs automated tests for the TextMate grammar file (syntaxes/n3logic.tmLanguage.json)
+# using the VS Code TextMate Grammar Test extension and Node.js.
+
+name: Grammar Tests
+
+on:
+  push:
+    paths:
+      - 'syntaxes/n3logic.tmLanguage.json'
+      - 'test/grammar/**'
+  pull_request:
+    paths:
+      - 'syntaxes/n3logic.tmLanguage.json'
+      - 'test/grammar/**'
+
+jobs:
+  grammar-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install
+      - name: Install VS Code Grammar Test CLI
+        run: npm install -g vscode-tmgrammar-test
+      - name: Run grammar tests
+        run: |
+          if [ -d test/grammar ]; then
+            vscode-tmgrammar-test -g syntaxes/n3logic.tmLanguage.json -t test/grammar/**/*.test
+          else
+            echo "No grammar tests found. Skipping."
+          fi

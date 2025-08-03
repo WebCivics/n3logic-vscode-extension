@@ -1,0 +1,206 @@
+{
+  "scopeName": "source.n3logic",
+  "name": "N3Logic",
+  "patterns": [
+    { "include": "#comment" },
+    { "include": "#directive" },
+    { "include": "#keyword" },
+    { "include": "#iri" },
+    { "include": "#prefixedName" },
+    { "include": "#builtin-predicate" },
+    { "include": "#functional-builtin" },
+    { "include": "#blankNode" },
+    { "include": "#variable" },
+    { "include": "#literal" },
+    { "include": "#boolean" },
+    { "include": "#list" },
+    { "include": "#set" },
+    { "include": "#punctuation" },
+    { "include": "#invalid" },
+    { "include": "#blockComment" }
+  ],
+  "repository": {
+    "comment": {
+      "patterns": [
+        {
+          "name": "comment.line.number-sign.n3logic",
+          "match": "#.*$"
+        }
+      ]
+    },
+    "blockComment": {
+      "patterns": [
+        {
+          "name": "comment.block.n3logic",
+          "begin": "#\\*",
+          "end": "\\*#"
+        }
+      ]
+    },
+    "directive": {
+      "patterns": [
+        {
+          "name": "keyword.other.directive.n3logic",
+          "match": "(@prefix|@base)"
+        }
+      ]
+    },
+    "keyword": {
+      "patterns": [
+        {
+          "name": "keyword.control.n3logic",
+          "match": "(@forAll|@forSome|=>|<=)"
+        }
+      ]
+    },
+    "iri": {
+      "patterns": [
+        {
+          "name": "constant.language.iri.n3logic",
+          "match": "<[^>]+>"
+        }
+      ]
+    },
+    "prefixedName": {
+      "patterns": [
+        {
+          "name": "constant.other.prefixed-name.n3logic",
+          "match": "[\\p{L}_][\\p{L}\\p{N}\\-]*:[\\p{L}_][\\p{L}\\p{N}\\-]*"
+        }
+      ]
+    },
+    "variable": {
+      "patterns": [
+        {
+          "name": "variable.other.n3logic",
+          "match": "\\?[\\p{L}_][\\p{L}\\p{N}_\\-]*"
+        }
+      ]
+    },
+    "blankNode": {
+      "patterns": [
+        {
+          "name": "constant.language.blank-node.n3logic",
+          "match": "_:[\\p{L}_][\\p{L}\\p{N}_\\-]*"
+        }
+      ]
+    },
+    "builtin-predicate": {
+      "patterns": [
+        {
+          "name": "entity.name.function.builtin.n3logic",
+          "match": "(math|string|log|time|list|type):[a-zA-Z_][\\w\\-]*"
+        }
+      ]
+    },
+    "functional-builtin": {
+      "patterns": [
+        {
+          "name": "entity.name.function.n3logic",
+          "match": "(log:[a-zA-Z_][\\w\\-]*|[a-zA-Z_][\\w\\-]*:[a-zA-Z_][\\w\\-]*|<%[a-zA-Z_][\\w\\-]*>)\\s*\\("
+        }
+      ]
+    },
+    "literal": {
+      "patterns": [
+        {
+          "name": "string.quoted.triple.n3logic",
+          "match": "\\\"\\\"\\\"(?:[^\\\\]|\\\\.)*?\\\"\\\"\\\"(@[a-zA-Z\\-]+|\\^\\^<[^>]+>|\\^\\^[a-zA-Z_][\\w\\-]*:[a-zA-Z_][\\w\\-]*)?"
+        },
+        {
+          "name": "string.quoted.double.n3logic",
+          "match": "\\\"(?:[^\\\\\\\"]|\\\\.)*\\\"(@[a-zA-Z\\-]+|\\^\\^<[^>]+>|\\^\\^[a-zA-Z_][\\w\\-]*:[a-zA-Z_][\\w\\-]*)?"
+        },
+        {
+          "name": "string.quoted.single.n3logic",
+          "match": "'(?:[^\\\\']|\\\\.)*'(@[a-zA-Z\\-]+|\\^\\^<[^>]+>|\\^\\^[a-zA-Z_][\\w\\-]*:[a-zA-Z_][\\w\\-]*)?"
+        },
+        {
+          "name": "constant.numeric.n3logic",
+          "match": "-?\\b\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?\\b"
+        },
+        {
+          "name": "constant.numeric.typed.n3logic",
+          "match": "-?\\b\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?\\b(\\^\\^<[^>]+>|\\^\\^[a-zA-Z_][\\w\\-]*:[a-zA-Z_][\\w\\-]*)"
+        },
+        {
+          "name": "constant.language.custom-datatype.n3logic",
+          "match": "\\^\\^([a-zA-Z_][\\w\\-]*):([a-zA-Z_][\\w\\-]*)"
+        }
+      ]
+    },
+    "invalid": {
+      "patterns": [
+        {
+          "name": "invalid.illegal.n3logic",
+          "match": "[`$]"
+        },
+        {
+          "name": "invalid.illegal.unclosed-string.n3logic",
+          "match": "\"[^\"]*$"
+        },
+        {
+          "name": "invalid.illegal.unclosed-string.n3logic",
+          "match": "'[^']*$"
+        },
+        {
+          "name": "invalid.illegal.unmatched-brace.n3logic",
+          "match": "[{}][^{}]*$"
+        }
+      ]
+    },
+    "list": {
+      "patterns": [
+        {
+          "name": "meta.structure.list.n3logic",
+          "begin": "\\(",
+          "end": "\\)",
+          "patterns": [
+            { "include": "#literal" },
+            { "include": "#iri" },
+            { "include": "#prefixedName" },
+            { "include": "#blankNode" },
+            { "include": "#variable" },
+            { "include": "#punctuation" }
+          ]
+        }
+      ]
+    },
+    "set": {
+      "patterns": [
+        {
+          "name": "meta.structure.set.n3logic",
+          "begin": "\\{",
+          "end": "\\}",
+          "patterns": [
+            { "include": "#set" },
+            { "include": "#literal" },
+            { "include": "#iri" },
+            { "include": "#prefixedName" },
+            { "include": "#builtin-predicate" },
+            { "include": "#functional-builtin" },
+            { "include": "#blankNode" },
+            { "include": "#variable" },
+            { "include": "#punctuation" }
+          ]
+        }
+      ]
+    },
+    "boolean": {
+      "patterns": [
+        {
+          "name": "constant.language.boolean.n3logic",
+          "match": "\\b(true|false)\\b"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.terminator.n3logic",
+          "match": "[.{}()\\[\\];,]"
+        }
+      ]
+    }
+  }
+}
