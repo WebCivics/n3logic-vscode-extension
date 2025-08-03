@@ -311,10 +311,10 @@ export class N3LogicParser {
     rules.forEach((rule, idx) => {
       this.debugLog(`[N3LogicParser][EXTRA] Rule #${idx} antecedent:`, JSON.stringify(rule.antecedent, null, 2));
       this.debugLog(`[N3LogicParser][EXTRA] Rule #${idx} consequent:`, JSON.stringify(rule.consequent, null, 2));
-      rule.antecedent.triples.forEach((triple, tIdx) => {
+  rule.antecedent.triples.forEach((triple: any, tIdx: number) => {
         this.debugLog(`[N3LogicParser][EXTRA] Rule #${idx} antecedent triple #${tIdx}:`, JSON.stringify(triple, null, 2));
       });
-      rule.consequent.triples.forEach((triple, tIdx) => {
+  rule.consequent.triples.forEach((triple: any, tIdx: number) => {
         this.debugLog(`[N3LogicParser][EXTRA] Rule #${idx} consequent triple #${tIdx}:`, JSON.stringify(triple, null, 2));
       });
     });

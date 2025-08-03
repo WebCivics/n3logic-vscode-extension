@@ -1,3 +1,14 @@
+# VS Code extension test user data and test output
+.vscode-test-user/
+.vscode-test/
+# VSCode extension build output
+out/
+dist/
+
+# Ignore compiled JS and map files in n3logic source tree
+n3logic/**/*.js
+n3logic/**/*.js.map
+
 # Logs
 logs
 *.log

@@ -1,0 +1,54 @@
+# Test: N3Logic - All Features
+
+# 1. Prefixes and IRIs
+@prefix ex: <http://example.org/> .
+@prefix math: <http://www.w3.org/2000/10/swap/math#> .
+@prefix string: <http://www.w3.org/2000/10/swap/string#> .
+
+# 2. Simple Rule
+{ ?x a ex:Person . } => { ?x ex:isHuman true . }.
+
+# 3. Builtins (math, string, log, list, time, type)
+{ ?x ex:age ?age . math:greaterThan(?age, 18) } => { ?x ex:isAdult true }.
+{ ?s string:contains(?s, "test") } => { ?s ex:hasTest true }.
+{ ?l list:member(?item, ?l) } => { ?item ex:isInList true }.
+{ ?t time:day(?t) } => { ?t ex:hasDay true }.
+{ ?v type:integer(?v) } => { ?v ex:isInteger true }.
+{ ?x log:equalTo(?y) } => { ?x ex:equalsY true }.
+
+# 4. Numeric literal with datatype
+{ ?x ex:score "42"^^<http://www.w3.org/2001/XMLSchema#integer> } => { ?x ex:hasScore true }.
+
+# 5. Unicode identifiers
+{ ?π ex:value ?v . } => { ?π ex:piValue ?v }.
+
+# 6. Multi-line string
+{ ?x ex:comment """This is
+a multi-line
+string""" } => { ?x ex:hasComment true }.
+
+# 7. Custom datatypes and language tags
+{ ?x ex:label "hello"@en } => { ?x ex:hasEnglishLabel true }.
+{ ?x ex:custom "custom"^^ex:CustomType } => { ?x ex:hasCustomType true }.
+
+# 8. Error/invalid highlighting
+{ ?x ex:age ?age . math:greaterThan(?age, ) } => { ?x ex:isAdult true }.
+
+# 9. Nested formulas
+{ { ?x ex:age ?age . } => { ?x ex:hasAge true } . } => { ?x ex:outer true }.
+
+# 10. Deprecated builtin (should warn)
+{ ?x log:implies(?y) } => { ?x ex:deprecated true }.
+
+# 11. Comments, brackets, auto-closing
+# This is a comment
+{ ?x ex:bracketTest ( [ ] ) } => { ?x ex:bracketed true }.
+
+# 12. Unknown prefix (should error)
+{ ?x unknown:foo ?y } => { ?x ex:unknown true }.
+
+# 13. Snippet pattern
+{ ?x ex:snippet ?y } => { ?x ex:snippetTest true }.
+
+# 14. Debugger integration (simulate error for code action)
+{ ?x ex:age ?age . math:sum(?age, ) } => { ?x ex:debugTest true }.

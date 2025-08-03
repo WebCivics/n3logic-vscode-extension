@@ -1,10 +1,22 @@
+
 import * as vscode from 'vscode';
 import { builtinDocs } from './shared';
 
 export const n3logicCodeActionProvider: vscode.CodeActionProvider = {
   provideCodeActions(document, range, context, token) {
     const actions: vscode.CodeAction[] = [];
-    for (const diag of context.diagnostics) {
+  for (const diag of context.diagnostics) {
+      // Add Quick Fix: Start Debugging and Jump to Error
+      if (diag.severity === vscode.DiagnosticSeverity.Error || diag.severity === vscode.DiagnosticSeverity.Warning) {
+        const debugAction = new vscode.CodeAction('Start Debugging and Jump to Error', vscode.CodeActionKind.QuickFix);
+        debugAction.command = {
+          command: 'n3logic.startDebugAtError',
+          title: 'Start Debugging and Jump to Error',
+          arguments: [document.uri, diag.range]
+        };
+        debugAction.diagnostics = [diag];
+        actions.push(debugAction);
+      }
       if (diag.message.startsWith('Undefined prefix: ')) {
         const prefix = diag.message.split(': ')[1];
         const fix = new vscode.CodeAction(`Add @prefix ${prefix}: <...> .`, vscode.CodeActionKind.QuickFix);
@@ -31,6 +43,6 @@ export const n3logicCodeActionProvider: vscode.CodeActionProvider = {
         }
       }
     }
-  return actions as (vscode.Command | vscode.CodeAction)[];
+  return actions;
   }
 };

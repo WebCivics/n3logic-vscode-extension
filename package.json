@@ -3,15 +3,60 @@
   "displayName": "N3Logic VSCode Extension",
   "description": "Language support and semantic tokens for N3Logic.",
   "version": "0.0.1",
-  "publisher": "your-publisher",
+  "publisher": "your-publisher-name",
+  "author": "Timothy Holborn",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WebCivics/n3logic-vscode-extension.git"
+  },
   "engines": {
-    "vscode": ">=1.70.0"
+    "vscode": ">=1.102.0"
   },
   "categories": [
     "Programming Languages"
   ],
-  "main": "./extension.js",
+  "main": "./out/extension.js",
+  "extensionKind": [
+    "ui",
+    "workspace"
+  ],
+  "activationEvents": [
+    "onLanguage:n3logic",
+    "onCommand:n3logic.runSelfTests",
+    "onCommand:n3logic.stepToRule",
+    "onCommand:n3logic.startDebugAtError"
+  ],
   "contributes": {
+    "commands": [
+      {
+        "command": "n3logic.startDebugAtError",
+        "title": "N3Logic: Start Debugging at Error"
+      },
+      {
+        "command": "n3logic.stepToRule",
+        "title": "N3Logic: Step to Next Rule",
+        "description": "Step the debugger to the next N3Logic rule."
+      },
+      {
+        "command": "n3logic.runSelfTests",
+        "title": "N3Logic: Run Self-Tests",
+        "category": "N3Logic",
+        "description": "Run built-in self-tests and show results in a webview panel."
+      }
+    ],
+    "configuration": [
+      {
+        "title": "N3Logic Extension",
+        "properties": {
+          "n3logic.enableSelfTest": {
+            "type": "boolean",
+            "default": true,
+            "description": "Enable the built-in self-test runner and command."
+          }
+        }
+      }
+    ],
     "languages": [
       {
         "id": "n3logic",
@@ -23,16 +68,105 @@
           ".n3",
           ".n3logic"
         ],
-        "configuration": "../language-configuration.json"
+  "configuration": "./n3logic/syntax/language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "n3logic",
+        "scopeName": "source.n3logic",
+  "path": "./n3logic/syntax/n3logic.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "n3logic",
+  "path": "./n3logic/snippets/n3logic.code-snippets"
+      }
+    ],
+    "debuggers": [
+      {
+        "type": "n3logic",
+        "label": "N3Logic Debugger",
+        "program": "./out/debugAdapter.js",
+        "runtime": "node",
+        "languages": [
+          "n3logic"
+        ],
+        "configurationAttributes": {
+          "launch": {
+            "properties": {
+              "program": {
+                "type": "string",
+                "description": "Path to N3Logic file to debug",
+                "default": "${file}"
+              },
+              "customArgs": {
+                "type": "object",
+                "description": "Custom arguments to pass to the N3Logic debug session",
+                "default": {}
+              },
+              "initialData": {
+                "type": "string",
+                "description": "Initial data to provide to the N3Logic debug session",
+                "default": ""
+              },
+              "env": {
+                "type": "object",
+                "description": "Environment variables for the debug session",
+                "default": {}
+              }
+            },
+            "required": [
+              "program"
+            ]
+          }
+        },
+        "initialConfigurations": [
+          {
+            "type": "n3logic",
+            "request": "launch",
+            "name": "Debug N3Logic file",
+            "program": "${file}"
+          }
+        ]
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "n3logic.stepToRule",
+        "key": "F10",
+        "when": "inDebugMode && debugType == 'n3logic'",
+        "mac": "F10",
+        "linux": "F10",
+        "win": "F10"
       }
     ]
   },
+  "bugs": {
+    "url": "https://github.com/WebCivics/n3logic-vscode-extension/issues"
+  },
+  "galleryBanner": {
+    "color": "#007acc",
+    "theme": "dark"
+  },
   "devDependencies": {
+    "@types/node": "^24.1.0",
     "@types/vscode": "^1.102.0",
-    "typescript": "^4.9.5",
-    "vscode": "^1.1.37"
+    "@vscode/test-electron": "^2.4.6",
+    "@vscode/vsce": "^3.6.0",
+    "typescript": "^5.9.2"
   },
   "scripts": {
-    "compile": "tsc -p ."
+    "compile": "tsc -p .",
+    "postcompile": "npm run copy-test-data",
+    "copy-test-data": "node -e \"const fs=require('fs'),path=require('path');const copy=(src,dst)=>{if(fs.existsSync(src)){if(fs.lstatSync(src).isDirectory()){fs.mkdirSync(dst,{recursive:true});for(const f of fs.readdirSync(src))copy(path.join(src,f),path.join(dst,f));}else{fs.mkdirSync(path.dirname(dst),{recursive:true});fs.copyFileSync(src,dst);}}};const exts=['.n3','.test','.txt','.json','.code-snippets'];const walk=(dir,cb)=>{for(const f of fs.readdirSync(dir)){const p=path.join(dir,f);if(fs.lstatSync(p).isDirectory())walk(p,cb);else cb(p);}};for(const d of ['test','tests'])if(fs.existsSync(d))walk(d,p=>exts.includes(path.extname(p))&&copy(p,path.join('out',p)));\"",
+    "compile:debug": "tsc -p debugAdapter/tsconfig.json",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "dependencies": {
+    "@vscode/debugadapter": "^1.68.0",
+    "@vscode/debugprotocol": "^1.68.0"
   }
 }

@@ -205,11 +205,12 @@ export function getDiagnostics(document: vscode.TextDocument): vscode.Diagnostic
         ));
       }
     }
-    // 6. Suggest best practices for rules
+    // 6. Suggest best practices and anti-patterns for rules
     if (parseResult.rules && Array.isArray(parseResult.rules)) {
       for (const rule of parseResult.rules) {
         const antTriples = rule.antecedent && rule.antecedent.triples ? rule.antecedent.triples.length : 0;
         const conTriples = rule.consequent && rule.consequent.triples ? rule.consequent.triples.length : 0;
+        // Empty antecedent/consequent
         if (antTriples === 0) {
           diags.push(new vscode.Diagnostic(
             new vscode.Range(0, 0, 1, 1),
@@ -223,6 +224,117 @@ export function getDiagnostics(document: vscode.TextDocument): vscode.Diagnostic
             'Rule consequent is empty. Rules should have at least one triple in the consequent.',
             vscode.DiagnosticSeverity.Hint
           ));
+        }
+        // Inefficient: too many triples in antecedent or consequent
+        if (antTriples > 10) {
+          diags.push(new vscode.Diagnostic(
+            new vscode.Range(0, 0, 1, 1),
+            `Rule antecedent has ${antTriples} triples. Consider splitting for clarity and efficiency.`,
+            vscode.DiagnosticSeverity.Hint
+          ));
+        }
+        if (conTriples > 10) {
+          diags.push(new vscode.Diagnostic(
+            new vscode.Range(0, 0, 1, 1),
+            `Rule consequent has ${conTriples} triples. Consider splitting for clarity and efficiency.`,
+            vscode.DiagnosticSeverity.Hint
+          ));
+        }
+        // No-op rule: identical antecedent and consequent
+        if (antTriples > 0 && conTriples > 0 && JSON.stringify(rule.antecedent.triples) === JSON.stringify(rule.consequent.triples)) {
+          diags.push(new vscode.Diagnostic(
+            new vscode.Range(0, 0, 1, 1),
+            'Rule antecedent and consequent are identical (no-op rule).',
+            vscode.DiagnosticSeverity.Warning
+          ));
+        }
+        // Always-true antecedent: antecedent is {}
+        if (antTriples === 0 && conTriples > 0) {
+          diags.push(new vscode.Diagnostic(
+            new vscode.Range(0, 0, 1, 1),
+            'Rule antecedent is always true ({}). Use with caution.',
+            vscode.DiagnosticSeverity.Information
+          ));
+        }
+        // Deeply nested lists (anti-pattern)
+        if (rule.antecedent && rule.antecedent.triples) {
+          for (const triple of rule.antecedent.triples) {
+            if (triple.object && typeof triple.object === 'object' && triple.object.type === 'List') {
+              let depth = 0;
+              let obj = triple.object;
+              while (obj && obj.type === 'List') {
+                depth++;
+                obj = obj.items && obj.items[0];
+                if (depth > 5) {
+                  diags.push(new vscode.Diagnostic(
+                    new vscode.Range(0, 0, 1, 1),
+                    'Deeply nested list detected in rule antecedent (depth > 5). Consider flattening.',
+                    vscode.DiagnosticSeverity.Hint
+                  ));
+                  break;
+                }
+              }
+            }
+          }
+        }
+        // Variable naming: suggest more explicit names
+        const allVars: string[] = [];
+        if (rule.antecedent && rule.antecedent.triples) {
+          for (const triple of rule.antecedent.triples) {
+            for (const v of [triple.subject, triple.predicate, triple.object]) {
+              if (v && typeof v === 'object' && v.type === 'Variable') {
+                allVars.push(v.value);
+                if (/^\?([a-zA-Z])$/.test('?' + v.value)) {
+                  diags.push(new vscode.Diagnostic(
+                    new vscode.Range(0, 0, 1, 1),
+                    `Variable '?${v.value}' is very short. Use more descriptive variable names for clarity.`,
+                    vscode.DiagnosticSeverity.Hint
+                  ));
+                }
+              }
+            }
+          }
+        }
+        // Too many variables in a rule
+        const uniqueVars = new Set(allVars);
+        if (uniqueVars.size > 8) {
+          diags.push(new vscode.Diagnostic(
+            new vscode.Range(0, 0, 1, 1),
+            `Rule uses ${uniqueVars.size} variables. Consider simplifying or splitting the rule.`,
+            vscode.DiagnosticSeverity.Hint
+          ));
+        }
+        // Repeated variable names in a rule
+        const varCounts: Record<string, number> = {};
+        for (const v of allVars) {
+          varCounts[v] = (varCounts[v] || 0) + 1;
+        }
+        for (const v in varCounts) {
+          if (varCounts[v] > 3) {
+            diags.push(new vscode.Diagnostic(
+              new vscode.Range(0, 0, 1, 1),
+              `Variable '?${v}' appears ${varCounts[v]} times in this rule. Consider refactoring for clarity.`,
+              vscode.DiagnosticSeverity.Hint
+            ));
+          }
+        }
+        // Suggest adding comments for complex rules (many triples or variables)
+        const ruleStartLine = 0; // Could be improved with parser support
+        if ((antTriples + conTriples > 8 || uniqueVars.size > 6)) {
+          let hasComment = false;
+          for (let l = Math.max(0, ruleStartLine - 2); l <= ruleStartLine; l++) {
+            if (document.lineAt(l).text.trim().startsWith('#')) {
+              hasComment = true;
+              break;
+            }
+          }
+          if (!hasComment) {
+            diags.push(new vscode.Diagnostic(
+              new vscode.Range(ruleStartLine, 0, ruleStartLine, 1),
+              'Consider adding a comment to explain this complex rule.',
+              vscode.DiagnosticSeverity.Hint
+            ));
+          }
         }
       }
     }

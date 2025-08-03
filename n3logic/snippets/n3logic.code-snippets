@@ -1,0 +1,45 @@
+{
+	"N3Logic Rule": {
+		"prefix": "rule",
+		"body": [
+			"{ $1 } => { $2 }."
+		],
+		"description": "Insert an N3Logic rule template"
+	},
+	"Prefix Declaration": {
+		"prefix": "prefix",
+		"body": [
+			"@prefix $1: <$2> ."
+		],
+		"description": "Insert a prefix declaration"
+	},
+	"math:sum builtin": {
+		"prefix": "mathsum",
+		"body": [
+			"math:sum($1, $2)"
+		],
+		"description": "Insert math:sum(x, y) builtin"
+	},
+	"string:contains builtin": {
+		"prefix": "strcontains",
+		"body": [
+			"string:contains($1, $2)"
+		],
+		"description": "Insert string:contains(s, t) builtin"
+	},
+	"Variable": {
+		"prefix": "var",
+		"body": [
+			"?$1"
+		],
+		"description": "Insert a variable"
+	},
+	"Comment": {
+		"prefix": "n3cmt",
+		"body": [
+			"# $1"
+		],
+		"description": "Insert a comment line"
+	}
+}
+// ...existing code from n3logic.code-snippets...

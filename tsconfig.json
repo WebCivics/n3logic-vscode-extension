@@ -1,15 +1,19 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2020",
-    "outDir": "./dist",
-    "lib": ["es2020"],
-    "declaration": true,
-    "sourceMap": true,
-    "rootDir": ".",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true
+  "module": "commonjs",
+  "target": "es2020",
+  "outDir": "./out",
+  "lib": ["es2020", "dom"],
+  "declaration": true,
+  "sourceMap": true,
+  "rootDir": ".",
+  "strict": true,
+  "esModuleInterop": true,
+  "skipLibCheck": true,
+  "types": ["node"]
   },
-  "include": ["extension.ts"]
+  "include": [
+    "extension.ts",
+    "tests/**/*.ts"
+  ]
 }

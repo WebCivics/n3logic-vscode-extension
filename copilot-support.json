@@ -3,62 +3,74 @@
     {
       "feature": "Completions/IntelliSense",
       "description": "Context-aware suggestions for IRIs, prefixes, variables, builtins, and rule templates. Suggest builtins and their argument signatures as users type.",
-      "status": "recommended"
+      "status": "partially-implemented",
+      "details": "Basic completions for variables, prefixes, and some builtins are present. Additional work: Ensure all builtins and their signatures are suggested contextually, and rule templates are included."
     },
     {
       "feature": "Hover Tooltips",
       "description": "Show documentation for builtins, prefixes, and rule constructs when hovering. Display type info, descriptions, and links to relevant N3Logic or W3C docs.",
-      "status": "recommended"
+      "status": "implemented",
+      "details": "Hover provider shows documentation for builtins and prefixes. Additional work: Expand to cover all rule constructs and add links to W3C docs."
     },
     {
       "feature": "Signature Help",
       "description": "Show argument types and descriptions for builtins and functions as the user types.",
-      "status": "recommended"
+      "status": "implemented",
+      "details": "Signature help for builtins is present. Additional work: Review coverage for all builtins and custom functions."
     },
     {
       "feature": "Go to Definition/Peek Definition",
       "description": "Enable navigation to prefix declarations, rule definitions, and builtin documentation.",
-      "status": "recommended"
+      "status": "implemented",
+      "details": "Definition provider supports prefixes and rules. Additional work: Add navigation to builtin documentation if possible."
     },
     {
       "feature": "Rename Symbol",
       "description": "Allow renaming of variables, prefixes, and rule names across the document.",
-      "status": "recommended"
+      "status": "implemented",
+      "details": "Rename provider supports variables and prefixes. Additional work: Ensure rule names are also supported."
     },
     {
       "feature": "Code Actions/Quick Fixes",
       "description": "Offer quick fixes for undefined prefixes, unbound variables, or common syntax errors. Suggest adding missing prefix declarations or correcting builtin names.",
-      "status": "recommended"
+      "status": "implemented",
+      "details": "Code actions for undefined prefixes and syntax errors are present. Additional work: Expand to cover more error types and builtin corrections."
     },
     {
       "feature": "Formatting",
       "description": "Add a document formatter for N3Logic, ensuring consistent indentation and spacing.",
-      "status": "recommended"
+      "status": "implemented",
+      "details": "Formatter is present. Additional work: Review for edge cases and best-practice formatting."
     },
     {
       "feature": "Inlay Hints",
       "description": "Show inlay hints for variable types, builtin argument types, or inferred values.",
-      "status": "recommended"
+      "status": "partially-implemented",
+      "details": "Inlay hints for some variables and builtins are present. Additional work: Expand to cover all argument types and inferred values."
     },
     {
       "feature": "Semantic Highlighting",
       "description": "Expand semantic tokens to distinguish between different types of IRIs, variables, and builtins.",
-      "status": "recommended"
+      "status": "implemented",
+      "details": "Semantic tokens and TextMate grammar are present. Additional work: Review for completeness and add more token types if needed."
     },
     {
       "feature": "Diagnostics for Best Practices",
       "description": "Warn about anti-patterns, deprecated features, or inefficient rule constructs.",
-      "status": "recommended"
+      "status": "partially-implemented",
+      "details": "Diagnostics for syntax and some best practices are present. Additional work: Add more checks for anti-patterns and deprecated features."
     },
     {
       "feature": "Snippets",
       "description": "Provide code snippets for common N3Logic patterns, rules, and builtin usage.",
-      "status": "recommended"
+      "status": "implemented",
+      "details": "Snippets for rules, prefixes, builtins, and variables are present. Additional work: Add more advanced or custom pattern snippets as needed."
     },
     {
       "feature": "Copilot Custom Instructions",
       "description": "Add detailed, up-to-date instructions in .github/copilot-instructions.md to help Copilot generate high-quality N3Logic code and explanations.",
-      "status": "recommended"
+      "status": "implemented",
+      "details": "Instructions file is present and up to date. Additional work: Keep instructions updated as features evolve."
     }
   ]
 }
